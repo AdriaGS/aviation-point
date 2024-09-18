@@ -1,4 +1,6 @@
 import { FlightHistoryData } from '@/types/flightHistory';
+import { connectToDatabase } from './db';
+import { FlightHistory } from '../models/FlightHistory';
 
 const generateFakeData = (flightCode: string): FlightHistoryData[] => {
   console.log(flightCode);
@@ -14,6 +16,35 @@ const generateFakeData = (flightCode: string): FlightHistoryData[] => {
     };
   });
 };
+
+export async function fetchFlightHistoryWithCache(
+  flightCode: string
+): Promise<FlightHistoryData[]> {
+  await connectToDatabase();
+
+  // Step 1: Check if flight history exists in the database
+  const existingRecords = await FlightHistory.find({ flightCode }).exec();
+
+  if (existingRecords.length > 0) {
+    console.log('Data retrieved from MongoDB!');
+    return existingRecords;
+  }
+
+  // Step 2: Fetch from API if not found in the database
+  const apiFlightHistory = await fetchFlightHistory(flightCode);
+
+  // Step 3: Store the fetched data in the database
+  const flightHistoryDocuments = apiFlightHistory.map((history) => ({
+    flightCode,
+    date: history.date,
+    delay: history.delay,
+    status: history.status,
+  }));
+
+  await FlightHistory.insertMany(flightHistoryDocuments);
+
+  return apiFlightHistory;
+}
 
 export async function fetchFlightHistory(
   flightCode: string
