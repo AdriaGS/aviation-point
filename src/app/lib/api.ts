@@ -1,60 +1,78 @@
 import { FlightHistoryData } from '@/types/flightHistory';
 import { connectToDatabase } from './db';
 import { FlightHistory } from '../models/FlightHistory';
-
-const generateFakeData = (flightCode: string): FlightHistoryData[] => {
-  console.log(flightCode);
-  const today = new Date();
-  return Array.from({ length: 5 }, (_, index) => {
-    const date = new Date(today);
-    date.setDate(date.getDate() - index);
-    const isDelayed = Math.random() > 0.5;
-    return {
-      date: date.toISOString().split('T')[0],
-      delay: isDelayed ? Math.floor(Math.random() * 120) + 1 : 0,
-      status: isDelayed ? 'Delayed' : 'On Time',
-    };
-  });
-};
+import { checkNotNull } from '../utils/extensions';
 
 export async function fetchFlightHistoryWithCache(
-  flightCode: string
+  flightCode: string,
+  startDate: Date = new Date(),
+  offSet: number = 5
 ): Promise<FlightHistoryData[]> {
   await connectToDatabase();
 
-  // Step 1: Check if flight history exists in the database
-  const existingRecords = await FlightHistory.find({ flightCode }).exec();
-
-  if (existingRecords.length > 0) {
-    console.log('Data retrieved from MongoDB!');
-    return existingRecords;
+  // Step 1: Generate the dates list to return
+  const datesToReturn: string[] = [];
+  for (let i = 0; i < offSet; i++) {
+    const date = new Date(startDate);
+    date.setDate(startDate.getDate() - i);
+    const dateString = date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+    datesToReturn.push(dateString);
   }
 
-  // Step 2: Fetch from API if not found in the database
-  const apiFlightHistory = await fetchFlightHistory(flightCode);
-
-  // Step 3: Store the fetched data in the database
-  const flightHistoryDocuments = apiFlightHistory.map((history) => ({
+  // Step 2: Query the database for records with these dates
+  const existingRecords = await FlightHistory.find({
     flightCode,
-    date: history.date,
-    delay: history.delay,
-    status: history.status,
-  }));
+    date: { $in: datesToReturn }, // Query with specific dates
+  }).exec();
 
-  await FlightHistory.insertMany(flightHistoryDocuments);
+  // Extract the dates that exist in the database
+  const existingDates = existingRecords.map((record) => record.date);
 
-  return apiFlightHistory;
+  // Step 3: Determine which dates are missing from the database
+  const missingDates = datesToReturn.filter(
+    (date) => !existingDates.includes(date)
+  );
+
+  // Step 4: Fetch missing data from the API if there are missing dates
+  const newRecords: FlightHistoryData[] = [];
+  for (const missingDate of missingDates) {
+    const apiFlightHistory = await fetchFlightHistory(flightCode, missingDate);
+    newRecords.push(...apiFlightHistory);
+  }
+
+  // Step 5: Store new data in the database
+  if (newRecords.length > 0) {
+    const flightHistoryDocuments = newRecords.map((history) => ({
+      flightCode,
+      date: history.date,
+      delay: history.delay,
+      status: history.status,
+    }));
+
+    await FlightHistory.insertMany(flightHistoryDocuments);
+  }
+
+  // Step 6: Combine existing and new records, sort them by date in descending order, and return
+  const combinedRecords = [...existingRecords, ...newRecords].sort(
+    (a, b) => (new Date(b.date) as any) - (new Date(a.date) as any)
+  );
+
+  return combinedRecords;
 }
 
 export async function fetchFlightHistory(
-  flightCode: string
+  flightCode: string,
+  flightDate: string = new Date().toISOString().split('T')[0]
 ): Promise<FlightHistoryData[]> {
   try {
-    const apiKey = process.env.AVIATION_STACK_API_KEY;
+    const apiKey = checkNotNull(process.env.AVIATION_STACK_API_KEY);
 
-    const response = await fetch(
-      `http://api.aviationstack.com/v1/flights?access_key=${apiKey}&flight_iata=${flightCode}`
-    );
+    const url = new URL('http://api.aviationstack.com/v1/flights');
+    url.searchParams.set('access_key', apiKey);
+    url.searchParams.set('flight_iata', flightCode);
+
+    const response = await fetch(url.href);
+    console.log(response);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch flight data for ${flightCode}`);
@@ -63,16 +81,18 @@ export async function fetchFlightHistory(
     const data = await response.json();
 
     // Transform the data into the FlightHistoryData[] format
-    const flightHistory: FlightHistoryData[] = data.data.map((flight: any) => ({
-      date: flight.flight_date,
-      delay: flight.departure.delay || 0,
-      status: flight.departure.delay > 0 ? 'Delayed' : 'On Time',
-    }));
+    const flightHistory: FlightHistoryData[] = data.data.map(
+      (flight: Record<string, any>) => ({
+        date: flight.flight_date,
+        delay: flight.departure.delay || 0,
+        status: flight.departure.delay > 0 ? 'Delayed' : 'On Time',
+      })
+    );
 
     return flightHistory;
   } catch (error) {
+    console.log(`Query parameters: ${flightCode}, ${flightDate}`);
     console.error('Error fetching flight history:', error);
-    console.log('Returning fake data due to API failure');
-    return generateFakeData(flightCode);
+    throw error;
   }
 }

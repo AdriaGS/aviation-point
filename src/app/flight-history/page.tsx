@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import FlightHistoryChecker from './FlightHistoryChecker'
-import { fetchFlightHistoryWithCache } from '@/lib/api'
+import { fetchFlightHistory } from '@/lib/api'
 import { FlightHistoryData } from '@/types/flightHistory'
 import { Title } from '@/components/ui/title'
 
@@ -15,7 +15,7 @@ export default async function FlightHistoryPage({
 
   if (flightCode) {
     try {
-      flightHistory = await fetchFlightHistoryWithCache(flightCode)
+      flightHistory = await fetchFlightHistory(flightCode)
     } catch (e) {
       error = 'Failed to fetch flight history. Please try again.'
     }
