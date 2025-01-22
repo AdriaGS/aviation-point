@@ -2,6 +2,7 @@ import { FlightHistoryData } from '@/types/flightHistory';
 import { connectToDatabase } from './db';
 import { FlightHistory } from '../models/FlightHistory';
 import { checkNotNull } from '../utils/extensions';
+import { isDevelopment } from '../utils/stage';
 
 export async function fetchFlightHistoryWithCache(
   flightCode: string,
@@ -66,13 +67,15 @@ export async function fetchFlightHistory(
 ): Promise<FlightHistoryData[]> {
   try {
     const apiKey = checkNotNull(process.env.AVIATION_STACK_API_KEY);
+    const baseUrl = isDevelopment()
+      ? process.env.LOCAL_AVIATION_STACK_ENDPOINT
+      : process.env.AVIATION_STACK_ENDPOINT;
 
-    const url = new URL('http://api.aviationstack.com/v1/flights');
+    const url = new URL(`${baseUrl}/v1/flights`);
     url.searchParams.set('access_key', apiKey);
     url.searchParams.set('flight_iata', flightCode);
 
     const response = await fetch(url.href);
-    console.log(response);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch flight data for ${flightCode}`);
