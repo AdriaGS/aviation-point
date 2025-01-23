@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { checkNotNull } from '../utils/extensions';
+import { checkNotNull } from './utils/extensions';
 
 const MONGODB_URI = checkNotNull(process.env.MONGODB_URI);
 

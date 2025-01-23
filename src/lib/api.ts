@@ -1,8 +1,8 @@
 import { FlightHistoryData } from '@/types/flightHistory';
-import { connectToDatabase } from './db';
-import { FlightHistory } from '../models/FlightHistory';
-import { checkNotNull } from '../utils/extensions';
-import { isDevelopment } from '../utils/stage';
+import { FlightHistory } from '@/models/FlightHistory';
+import { connectToDatabase } from '@/lib/db';
+import { checkNotNull } from '@/lib/utils/extensions';
+import { isDevelopment } from '@/lib/utils/stage';
 
 export async function fetchFlightHistoryWithCache(
   flightCode: string,
