@@ -1,12 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Loader2 } from 'lucide-react'
+import SearchBar from '@/components/SearchBar'
 import { FlightHistoryData } from '@/types/flightHistory'
-
 
 interface FlightHistoryProps {
   initialFlightHistory: FlightHistoryData[] | null;
@@ -14,11 +10,9 @@ interface FlightHistoryProps {
 }
 
 export default function FlightHistoryChecker({ initialFlightHistory, initialError }: FlightHistoryProps) {
-  const [flightCode, setFlightCode] = useState<string>('')
   const [flightHistory, setFlightHistory] = useState<FlightHistoryData[] | null>(initialFlightHistory)
-  const [loading, setLoading] = useState<boolean>(false)
+  const [, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(initialError)
-  const router = useRouter()
 
   useEffect(() => {
     setFlightHistory(initialFlightHistory)
@@ -26,40 +20,10 @@ export default function FlightHistoryChecker({ initialFlightHistory, initialErro
     setLoading(false)
   }, [initialFlightHistory, initialError])
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setLoading(true)
-    setError(null)
-    setFlightHistory(null)
-
-    router.push(`/flight-history?flightCode=${flightCode}`)
-  }
-
   return (
     <div className='max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden md:max-w-2xl'>
       <div className='p-8 w-full'>
-        <form onSubmit={handleSubmit} className='mt-6'>
-          <div className='flex items-center border-b border-indigo-500 dark:border-indigo-400 py-2'>
-            <Input
-              type='text'
-              placeholder='Enter flight code'
-              className='appearance-none bg-transparent border-none w-full text-gray-700 dark:text-gray-300 mr-3 py-1 px-2 leading-tight focus:outline-none'
-              value={flightCode}
-              onChange={(e) => setFlightCode(e.target.value)}
-              required
-            />
-            <Button type='submit' disabled={loading} className='bg-indigo-500 hover:bg-indigo-600 text-white'>
-              {loading ? (
-                <>
-                  <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-                  Checking
-                </>
-              ) : (
-                'Check'
-              )}
-            </Button>
-          </div>
-        </form>
+        <SearchBar onLoadingChange={setLoading} />
 
         {error && (
           <div className='mt-4 text-red-500 dark:text-red-400'>{error}</div>
@@ -102,5 +66,5 @@ export default function FlightHistoryChecker({ initialFlightHistory, initialErro
         )}
       </div>
     </div>
-  )
+  );
 }
