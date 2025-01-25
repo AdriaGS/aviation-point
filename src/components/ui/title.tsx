@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/extensions/cn'
 
 type TitleSize = 'sm' | 'md' | 'lg' | 'xl'
 
