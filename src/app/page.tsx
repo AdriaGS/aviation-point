@@ -6,6 +6,11 @@ import BlogPosts from '@/components/BlogPosts';
 export const metadata: Metadata = {
   title: 'Flight Tracker',
   description: 'Track your flight data!',
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
 };
 
 export default function Home() {
