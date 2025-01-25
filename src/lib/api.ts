@@ -3,6 +3,7 @@ import { FlightHistory } from '@/models/FlightHistory';
 import { connectToDatabase } from '@/lib/db';
 import { checkNotNull } from '@/lib/extensions/checkNotNull';
 import { isDevelopment } from '@/lib/extensions/stage';
+import { AviationStackResponse, FlightData } from '@/types/aviationStack';
 
 export async function fetchFlightHistoryWithCache(
   flightCode: string,
@@ -55,7 +56,8 @@ export async function fetchFlightHistoryWithCache(
 
   // Step 6: Combine existing and new records, sort them by date in descending order, and return
   const combinedRecords = [...existingRecords, ...newRecords].sort(
-    (a, b) => (new Date(b.date) as any) - (new Date(a.date) as any)
+    (a, b) =>
+      new Date(b.date).getMilliseconds() - new Date(a.date).getMilliseconds()
   );
 
   return combinedRecords;
@@ -81,15 +83,18 @@ export async function fetchFlightHistory(
       throw new Error(`Failed to fetch flight data for ${flightCode}`);
     }
 
-    const data = await response.json();
+    const data = await (response.json() as Promise<AviationStackResponse>);
 
     // Transform the data into the FlightHistoryData[] format
     const flightHistory: FlightHistoryData[] = data.data.map(
-      (flight: Record<string, any>) => ({
-        date: flight.flight_date,
-        delay: flight.departure.delay || 0,
-        status: flight.departure.delay > 0 ? 'Delayed' : 'On Time',
-      })
+      (flight: FlightData) => {
+        const delay = flight.departure.delay || 0;
+        return {
+          date: flight.flight_date,
+          delay: delay,
+          status: delay > 0 ? 'Delayed' : 'On Time',
+        };
+      }
     );
 
     return flightHistory;

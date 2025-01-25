@@ -7,6 +7,14 @@ if (!MONGODB_URI) {
   throw new Error('Please define the MONGODB_URI environment variable');
 }
 
+declare global {
+  // eslint-disable-next-line no-var
+  var mongoose: {
+    conn: typeof import('mongoose') | null;
+    promise: Promise<typeof import('mongoose')> | null;
+  };
+}
+
 let cached = global.mongoose;
 
 if (!cached) {
