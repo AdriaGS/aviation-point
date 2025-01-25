@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
-import FlightHistoryChecker from './flight-history/page';
+import Map from '@/components/Map';
+import SearchBar from '@/components/SearchBar';
+import BlogPosts from '@/components/BlogPosts';
 
 export const metadata: Metadata = {
   title: 'Flight Tracker',
@@ -8,10 +10,23 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <section>
-      <FlightHistoryChecker searchParams={{
-        flightCode: undefined
-      }} />
-    </section>
-  );
+    <div className='min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200'>
+      <div className='py-12 px-4 sm:px-6 lg:px-8'>
+        <div className='max-w-7xl mx-auto'>
+          <h1 className='text-4xl font-bold mb-8 text-gray-900 dark:text-gray-100'>Flight Tracker</h1>
+          <section className='mb-12'>
+            <SearchBar />
+          </section>
+          <section className='mb-12'>
+            <h2 className='text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100'>Aviation Map</h2>
+            <Map />
+          </section>
+          <section>
+            <h2 className='text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100'>Latest Blog Posts</h2>
+            <BlogPosts />
+          </section>
+        </div>
+      </div>
+    </div>
+  )
 }
