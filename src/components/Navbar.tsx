@@ -20,7 +20,7 @@ export function Navbar() {
   const pathname = usePathname()
 
   return (
-    <nav className='bg-white dark:bg-gray-800 shadow-md'>
+    <nav className='sticky top-0 z-100 bg-white dark:bg-gray-800 shadow-md'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         <div className='flex items-center justify-between h-16'>
           <div className='flex items-center'>
@@ -43,9 +43,6 @@ export function Navbar() {
                 ))}
               </div>
             </div>
-          </div>
-          <div className='hidden md:block'>
-            <Button variant='outline'>Sign In</Button>
           </div>
           <div className='-mr-2 flex md:hidden'>
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -74,11 +71,6 @@ export function Navbar() {
                       {item.name}
                     </Link>
                   ))}
-                </div>
-                <div className='pt-4 pb-3 border-t border-gray-200 dark:border-gray-700'>
-                  <Button variant='outline' className='w-full' onClick={() => setIsOpen(false)}>
-                    Sign In
-                  </Button>
                 </div>
               </SheetContent>
             </Sheet>

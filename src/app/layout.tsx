@@ -36,7 +36,7 @@ function ThemeToggle() {
       variant='outline'
       size='icon'
       onClick={toggleTheme}
-      className='fixed top-4 right-4 bg-white dark:bg-gray-800'
+      className='fixed top-4 right-4 bg-white text-indigo-500 dark:bg-gray-800'
     >
       {isDark ? <Sun className='h-[1.2rem] w-[1.2rem]' /> : <Moon className='h-[1.2rem] w-[1.2rem]' />}
       <span className='sr-only'>Toggle theme</span>
