@@ -14,7 +14,7 @@ export default function BlogPosts() {
           <Card className='overflow-hidden transition-shadow duration-300 hover:shadow-lg'>
             <CardContent className='p-0'>
               <Image
-                src={post.imagePath || '/blog-images/understanding-flight-tracking/cover.jpg'}
+                src={post.imagePath || '/blog-images/placeholder.jpg'}
                 alt={post.title}
                 width={200}
                 height={200}

@@ -40,7 +40,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
           <h1 className='text-4xl font-bold mb-4 text-gray-900 dark:text-gray-100'>{post.title}</h1>
           <p className='text-sm text-gray-500 dark:text-gray-400 mb-6'>{post.date}</p>
           <Image
-            src={post.imagePath || '/placeholder.svg'}
+            src={post.imagePath || '/blog-images/placeholder.jpg'}
             alt={post.title}
             width={800}
             height={400}

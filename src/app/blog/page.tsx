@@ -18,7 +18,7 @@ export default function BlogPage() {
                 <Card className='overflow-hidden transition-shadow duration-300 hover:shadow-lg'>
                   <CardContent className='p-0'>
                     <Image
-                      src={post.imagePath || '/placeholder.svg'}
+                      src={post.imagePath || '/blog-images/placeholder.jpg'}
                       alt={post.title}
                       width={200}
                       height={200}
