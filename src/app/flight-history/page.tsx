@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import FlightHistoryChecker from './FlightHistoryChecker'
+import FlightHistory from './FlightHistory'
 import { fetchFlightHistory } from '@/lib/api'
 import { FlightHistoryData } from '@/types/flightHistory'
 
@@ -24,7 +24,7 @@ export default async function FlightHistoryPage({
     <div className='min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200'>
       <div className='py-12 px-4 sm:px-6 lg:px-8'>
         <Suspense fallback={<div>Loading...</div>}>
-          <FlightHistoryChecker initialFlightHistory={flightHistory} initialError={error} />
+          <FlightHistory initialFlightHistory={flightHistory} initialError={error} />
         </Suspense>
       </div>
     </div>

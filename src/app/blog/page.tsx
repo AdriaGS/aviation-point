@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Card, CardContent } from '@/components/ui/card'
-import { BlogPost } from '@/models/BlogPost';
+import { BlogPost } from '@/types/blogPost';
 import { getAllPosts } from '@/lib/getPosts';
 
 export default function BlogPage() {

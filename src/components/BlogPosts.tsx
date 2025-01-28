@@ -2,7 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Card, CardContent } from '@/components/ui/card'
 import { getAllPosts } from '@/lib/getPosts';
-import { BlogPost } from '@/models/BlogPost';
+import { BlogPost } from '@/types/blogPost';
 
 export default function BlogPosts() {
   const blogPosts: BlogPost[] = getAllPosts();

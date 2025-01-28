@@ -9,7 +9,7 @@ interface FlightHistoryProps {
   initialError: string | null;
 }
 
-export default function FlightHistoryChecker({ initialFlightHistory, initialError }: FlightHistoryProps) {
+export default function FlightHistory({ initialFlightHistory, initialError }: FlightHistoryProps) {
   const [flightHistory, setFlightHistory] = useState<FlightHistoryData[] | null>(initialFlightHistory)
   const [, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(initialError)
