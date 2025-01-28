@@ -21,7 +21,7 @@ export default function FlightHistory({ initialFlightHistory, initialError }: Fl
   }, [initialFlightHistory, initialError])
 
   return (
-    <div className='max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden md:max-w-2xl'>
+    <div className='max-w-7xl mx-auto'>
       <div className='p-8 w-full'>
         <SearchBar onLoadingChange={setLoading} />
 
