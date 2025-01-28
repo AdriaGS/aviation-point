@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import SearchBar from '@/components/SearchBar'
 import { FlightHistoryData } from '@/types/flightHistory'
+import { FlightScore } from '@/components/FlightScore';
+import { FlightInfo } from '@/components/FlightInfo';
 
 interface FlightHistoryProps {
   initialFlightHistory: FlightHistoryData[] | null;
@@ -31,37 +33,11 @@ export default function FlightHistory({ initialFlightHistory, initialError }: Fl
 
         {flightHistory && flightHistory.length > 0 && (
           <div className='mt-6'>
-            <h2 className='text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2'>Flight History</h2>
-            <div className='bg-white dark:bg-gray-700 shadow overflow-hidden sm:rounded-md'>
-              <ul className='divide-y divide-gray-200 dark:divide-gray-600'>
-                {flightHistory.map((flight, index) => (
-                  <li key={index}>
-                    <div className='px-4 py-4 sm:px-6'>
-                      <div className='flex items-center justify-between'>
-                        <p className='text-sm font-medium text-indigo-600 dark:text-indigo-400 truncate'>
-                          {flight.date}
-                        </p>
-                        <div className='ml-2 flex-shrink-0 flex'>
-                          <p className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${flight.status === 'Delayed'
-                            ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
-                            : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-                            }`}>
-                            {flight.status}
-                          </p>
-                        </div>
-                      </div>
-                      <div className='mt-2 sm:flex sm:justify-between'>
-                        <div className='sm:flex'>
-                          <p className='flex items-center text-sm text-gray-500 dark:text-gray-400'>
-                            Delay: {flight.delay} minutes
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <h2 className='text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4'>Flight History</h2>
+            <FlightScore flightHistory={flightHistory} />
+            {flightHistory.map((flight, index) => (
+              <FlightInfo key={index} flightData={flight} />
+            ))}
           </div>
         )}
       </div>

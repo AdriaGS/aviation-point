@@ -46,9 +46,9 @@ export async function fetchFlightHistoryWithCache(
   if (newRecords.length > 0) {
     const flightHistoryDocuments = newRecords.map((history) => ({
       flightCode,
-      date: history.date,
-      delay: history.delay,
-      status: history.status,
+      date: history.flight_date,
+      delay: history.departure.delay,
+      status: history.departure.delay > 0 ? 'Delayed' : 'On Time',
     }));
 
     await FlightHistory.insertMany(flightHistoryDocuments);
@@ -88,11 +88,36 @@ export async function fetchFlightHistory(
     // Transform the data into the FlightHistoryData[] format
     const flightHistory: FlightHistoryData[] = data.data.map(
       (flight: FlightData) => {
-        const delay = flight.departure.delay || 0;
         return {
-          date: flight.flight_date,
-          delay: delay,
-          status: delay > 0 ? 'Delayed' : 'On Time',
+          flight_date: flight.flight_date,
+          flight_status: flight.flight_status,
+          departure: {
+            airport: flight.departure.airport,
+            iata: flight.departure.iata,
+            delay: flight.departure.delay || 0,
+            scheduled: flight.departure.scheduled,
+            actual: flight.departure.actual || '2019-12-12T04:20:00+00:00',
+            terminal: flight.departure.terminal,
+            gate: flight.departure.gate,
+          },
+          arrival: {
+            airport: flight.arrival.airport,
+            iata: flight.arrival.iata,
+            delay: flight.arrival.delay || 0,
+            scheduled: flight.arrival.scheduled,
+            actual: flight.arrival.actual || '2019-12-12T04:20:00+00:00',
+            terminal: flight.arrival.terminal,
+            gate: flight.arrival.gate,
+          },
+          airline: {
+            name: flight.airline.name,
+          },
+          flight: {
+            iata: flight.flight.iata,
+          },
+          aircraft: {
+            iata: flight.aircraft?.iata || 'N/A',
+          },
         };
       }
     );
