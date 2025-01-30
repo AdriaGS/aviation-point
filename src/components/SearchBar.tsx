@@ -1,15 +1,24 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 
 export default function SearchBar({ onLoadingChange }: { onLoadingChange?: (loading: boolean) => void }) {
-  const [flightCode, setFlightCode] = useState('');
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [flightCode, setFlightCode] = useState(searchParams.get('flightCode') || '');
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Update flightCode if it changes in the URL
+    const newFlightCode = searchParams.get('flightCode')
+    if (newFlightCode !== null && newFlightCode !== flightCode) {
+      setFlightCode(newFlightCode)
+    }
+  }, [searchParams, flightCode])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
