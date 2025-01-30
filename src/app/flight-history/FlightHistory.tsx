@@ -23,7 +23,7 @@ export default function FlightHistory({ initialFlightHistory, initialError }: Fl
   }, [initialFlightHistory, initialError])
 
   return (
-    <div className='max-w-7xl mx-auto'>
+    <div className='max-w-5xl mx-auto'>
       <div className='p-8 w-full'>
         <SearchBar onLoadingChange={setLoading} />
 
@@ -33,8 +33,8 @@ export default function FlightHistory({ initialFlightHistory, initialError }: Fl
 
         {flightHistory && flightHistory.length > 0 && (
           <div className='mt-6'>
-            <h2 className='text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4'>Flight History</h2>
             <FlightScore flightHistory={flightHistory} />
+            <h2 className='text-2xl text-center font-semibold text-gray-900 dark:text-gray-100 mb-4'>Flight History</h2>
             {flightHistory.map((flight, index) => (
               <FlightInfo key={index} flightData={flight} />
             ))}

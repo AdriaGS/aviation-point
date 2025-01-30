@@ -7,6 +7,7 @@ export interface FlightHistoryData {
     delay: number;
     scheduled: string;
     actual: string;
+    estimated: string;
     terminal: string;
     gate: string;
   };
@@ -16,6 +17,7 @@ export interface FlightHistoryData {
     delay: number;
     scheduled: string;
     actual: string;
+    estimated: string;
     terminal: string;
     gate: string;
   };

@@ -1,8 +1,12 @@
 import { useState } from 'react'
-import { ChevronDown, ChevronUp } from 'lucide-react'
+import { ChevronDown, ChevronUp, Clock, Info, Plane } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Progress } from '@/components/ui/progress'
+import { Card, CardContent } from '@/components/ui/card'
 import { FlightHistoryData } from '@/types/flightHistory'
+import Image from 'next/image'
+import Link from 'next/link'
+import { cn } from '@/lib/extensions/cn'
 
 interface FlightInfoProps {
   flightData: FlightHistoryData
@@ -22,78 +26,144 @@ export function FlightInfo({ flightData }: FlightInfoProps) {
     })
   }
 
-  const getDepartureDelay = () => {
-    const delay = flightData.departure.delay || 0
-    return delay > 0 ? `${delay} minutes` : 'On time'
+  const calculateDelay = (scheduled: string, actual: string) => {
+    const scheduledTime = new Date(scheduled).getTime()
+    const actualTime = new Date(actual).getTime()
+    const delayInMinutes = Math.round((actualTime - scheduledTime) / 60000)
+    return delayInMinutes
   }
 
-  const getArrivalDelay = () => {
-    const delay = flightData.arrival.delay || 0
-    return delay > 0 ? `${delay} minutes` : 'On time'
+  const getDelayColor = (delay: number) => {
+    if (delay <= 15) return 'text-green-600 dark:text-green-400'
+    if (delay <= 60) return 'text-yellow-600 dark:text-yellow-400'
+    return 'text-red-600 dark:text-red-400'
   }
+
+  const getDelayText = (delay: number) => {
+    if (delay <= 0) return 'On time'
+    return `${delay} min delay`
+  }
+
+  const calculateProgress = () => {
+    const now = new Date().getTime()
+    const departureTime = new Date(flightData.departure.actual || flightData.departure.estimated).getTime()
+    const arrivalTime = new Date(flightData.arrival.actual || flightData.arrival.estimated).getTime()
+
+    if (now < departureTime) return 0
+    if (now > arrivalTime) return 100
+
+    return Math.round(((now - departureTime) / (arrivalTime - departureTime)) * 100)
+  }
+
+  const arrivalDelay = calculateDelay(
+    flightData.arrival.scheduled,
+    flightData.arrival.actual || flightData.arrival.estimated,
+  )
+  const delayColor = getDelayColor(arrivalDelay)
 
   return (
-    <Card className='w-full mb-4'>
-      <CardHeader>
-        <CardTitle className='flex justify-between items-center'>
-          <span>Flight {flightData.flight.iata}</span>
-          <Button variant='ghost' size='sm' onClick={() => setIsExpanded(!isExpanded)}>
-            {isExpanded ? <ChevronUp className='h-4 w-4' /> : <ChevronDown className='h-4 w-4' />}
-          </Button>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className='grid grid-cols-2 gap-4'>
+    <Card className='mb-4 mx-auto'>
+      <CardContent className='pt-6'>
+        <div className='flex justify-between items-center mb-4'>
           <div>
-            <p className='text-sm font-medium'>Departure</p>
-            <p className='text-xs text-muted-foreground'>
-              {flightData.departure.airport} ({flightData.departure.iata})
-            </p>
-            <p className='text-xs'>Scheduled: {formatDate(flightData.departure.scheduled)}</p>
-            <p className='text-xs'>
-              Actual: {formatDate(flightData.departure.actual)}
-            </p>
-            <p className='text-xs font-medium'>Delay: {getDepartureDelay()}</p>
+            <h3 className='text-lg font-bold text-primary'>
+              {flightData.airline.name} - {flightData.flight.iata}
+            </h3>
+            <p className='text-sm text-muted-foreground'>{formatDate(flightData.flight_date)}</p>
           </div>
-          <div>
-            <p className='text-sm font-medium'>Arrival</p>
-            <p className='text-xs text-muted-foreground'>
-              {flightData.arrival.airport} ({flightData.arrival.iata})
-            </p>
-            <p className='text-xs'>Scheduled: {formatDate(flightData.arrival.scheduled)}</p>
-            <p className='text-xs'>Actual: {formatDate(flightData.arrival.actual || flightData.arrival.scheduled)}</p>
-            <p className='text-xs font-medium'>Delay: {getArrivalDelay()}</p>
+          <Button variant='ghost' size='sm' onClick={() => setIsExpanded(!isExpanded)} aria-expanded={isExpanded}>
+            {isExpanded ? <ChevronUp className='h-4 w-4' /> : <ChevronDown className='h-4 w-4' />}
+            <span className='sr-only'>{isExpanded ? 'Show less' : 'Show more'}</span>
+          </Button>
+        </div>
+
+        <div className='flex items-center justify-between mb-4'>
+          <div className='flex items-center'>
+            <Plane className='h-6 w-6 mr-2 text-primary' />
+            <Link href={`/airport/${flightData.departure.airport}`} className='text-sm font-semibold hover:underline'>
+              {flightData.departure.airport}
+            </Link>
+          </div>
+          <Progress value={calculateProgress()} className='w-1/3' />
+          <div className='flex items-center'>
+            <Link href={`/airport/${flightData.arrival.airport}`} className='text-sm font-semibold hover:underline'>
+              {flightData.arrival.airport}
+            </Link>
+            <Plane className='h-6 w-6 ml-2 transform rotate-90 text-primary' />
           </div>
         </div>
+
+        <div className='grid grid-cols-2 gap-8 mb-4'>
+          <div>
+            <p className='text-sm font-semibold text-primary mb-1'>Departure</p>
+            <p className='text-xs font-medium'>Scheduled: {formatDate(flightData.departure.scheduled)}</p>
+            <p className='text-xs'>
+              Actual: {formatDate(flightData.departure.actual || flightData.departure.estimated)}
+            </p>
+            <div className='flex items-center mt-1'>
+              <Clock className='h-4 w-4 mr-1 text-muted-foreground' />
+              <p
+                className={cn(
+                  'text-xs font-semibold',
+                  getDelayColor(
+                    calculateDelay(
+                      flightData.departure.scheduled,
+                      flightData.departure.actual || flightData.departure.estimated,
+                    ),
+                  ),
+                )}
+              >
+                {getDelayText(
+                  calculateDelay(
+                    flightData.departure.scheduled,
+                    flightData.departure.actual || flightData.departure.estimated,
+                  ),
+                )}
+              </p>
+            </div>
+          </div>
+          <div>
+            <p className='text-sm font-semibold text-primary mb-1'>Arrival</p>
+            <p className='text-xs font-medium'>Scheduled: {formatDate(flightData.arrival.scheduled)}</p>
+            <p className='text-xs'>Actual: {formatDate(flightData.arrival.actual || flightData.arrival.estimated)}</p>
+            <div className='flex items-center mt-1'>
+              <Clock className='h-4 w-4 mr-1 text-muted-foreground' />
+              <p className={cn('text-xs font-semibold', delayColor)}>{getDelayText(arrivalDelay)}</p>
+            </div>
+          </div>
+        </div>
+
         {isExpanded && (
-          <div className='mt-4 border-t pt-4'>
-            <h4 className='text-sm font-medium mb-2'>Additional Information</h4>
-            <div className='grid grid-cols-2 gap-4 text-xs'>
+          <div className='mt-4 pt-4 border-t border-border'>
+            <h4 className='text-sm font-semibold text-primary mb-2'>Additional Information</h4>
+            <div className='grid grid-cols-2 gap-4'>
               <div>
-                <p>
-                  <span className='font-medium'>Airline:</span> {flightData.airline.name}
+                <p className='text-xs'>
+                  <span className='font-medium'>Terminal:</span> {flightData.departure.terminal}
                 </p>
-                <p>
-                  <span className='font-medium'>Aircraft:</span> {flightData.aircraft?.iata}
-                </p>
-                <p>
-                  <span className='font-medium'>Departure Terminal:</span> {flightData.departure.terminal}
-                </p>
-                <p>
-                  <span className='font-medium'>Departure Gate:</span> {flightData.departure.gate}
+                <p className='text-xs'>
+                  <span className='font-medium'>Gate:</span> {flightData.departure.gate}
                 </p>
               </div>
               <div>
-                <p>
-                  <span className='font-medium'>Flight Status:</span> {flightData.flight_status}
+                <p className='text-xs'>
+                  <span className='font-medium'>Terminal:</span> {flightData.arrival.terminal}
                 </p>
-                <p>
-                  <span className='font-medium'>Arrival Terminal:</span> {flightData.arrival.terminal}
-                </p>
-                <p>
-                  <span className='font-medium'>Arrival Gate:</span> {flightData.arrival.gate}
+                <p className='text-xs'>
+                  <span className='font-medium'>Gate:</span> {flightData.arrival.gate}
                 </p>
               </div>
+            </div>
+            <div className='mt-4 flex items-center'>
+              <Link href={`/aircraft/${flightData.aircraft.iata}`} className='flex items-center hover:underline'>
+                <span className='text-sm font-medium'>{flightData.aircraft.iata}</span>
+              </Link>
+              <Link href={`/aircraft/${flightData.aircraft.iata}`} className='ml-auto'>
+                <Button variant='outline' size='sm'>
+                  <Info className='h-4 w-4 mr-1' />
+                  Aircraft Details
+                </Button>
+              </Link>
             </div>
           </div>
         )}
@@ -101,4 +171,3 @@ export function FlightInfo({ flightData }: FlightInfoProps) {
     </Card>
   )
 }
-

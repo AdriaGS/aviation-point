@@ -96,6 +96,8 @@ export async function fetchFlightHistory(
             iata: flight.departure.iata,
             delay: flight.departure.delay || 0,
             scheduled: flight.departure.scheduled,
+            estimated:
+              flight.departure.estimated || '2019-12-12T04:20:00+00:00',
             actual: flight.departure.actual || '2019-12-12T04:20:00+00:00',
             terminal: flight.departure.terminal,
             gate: flight.departure.gate,
@@ -105,6 +107,7 @@ export async function fetchFlightHistory(
             iata: flight.arrival.iata,
             delay: flight.arrival.delay || 0,
             scheduled: flight.arrival.scheduled,
+            estimated: flight.arrival.estimated || '2019-12-12T04:20:00+00:00',
             actual: flight.arrival.actual || '2019-12-12T04:20:00+00:00',
             terminal: flight.arrival.terminal,
             gate: flight.arrival.gate,
