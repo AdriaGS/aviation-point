@@ -22,11 +22,11 @@ export default function ContactPage() {
   return (
     <div className='min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200'>
       <div className='py-12 px-4 sm:px-6 lg:px-8'>
-        <div className='max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden md:max-w-2xl'>
+        <div className='max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden md:max-w-5xl'>
           <div className='p-8 w-full'>
             <Title size='xl' as='h1' className='mb-6'>Contact Us</Title>
             {!submitted ? (
-              <form onSubmit={handleSubmit} className='max-w-lg space-y-4'>
+              <form onSubmit={handleSubmit} className='max-w space-y-4'>
                 <div>
                   <label htmlFor='name' className='block text-sm font-medium text-gray-700'>
                     Name
@@ -71,7 +71,7 @@ export default function ContactPage() {
                 </div>
                 <button
                   type='submit'
-                  className='w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition'
+                  className='w-full bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition'
                 >
                   Submit
                 </button>
