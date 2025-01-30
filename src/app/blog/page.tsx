@@ -11,7 +11,7 @@ export default function BlogPage() {
     <div className='min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200'>
       <div className='py-12 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-7xl mx-auto'>
-          <h1 className='text-4xl font-bold mb-8 text-gray-900 dark:text-gray-100'>Flight Tracker Blog</h1>
+          <h1 className='text-4xl font-bold mb-8 text-gray-900 dark:text-gray-100'>Aviation Point Blog</h1>
           <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
             {blogPosts.map((post) => (
               <Link key={post.slug} href={`/blog/${post.slug}`}>
