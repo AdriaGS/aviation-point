@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Card, CardContent } from '@/components/ui/card'
 import { FlightHistoryData } from '@/types/flightHistory'
-import Image from 'next/image'
 import Link from 'next/link'
 import { cn } from '@/lib/extensions/cn'
 
@@ -55,11 +54,14 @@ export function FlightInfo({ flightData }: FlightInfoProps) {
     return Math.round(((now - departureTime) / (arrivalTime - departureTime)) * 100)
   }
 
-  const arrivalDelay = calculateDelay(
+  const departureDelay = flightData.departure.delay || calculateDelay(
+    flightData.departure.scheduled,
+    flightData.departure.actual || flightData.departure.estimated,
+  );
+  const arrivalDelay = flightData.arrival.delay || calculateDelay(
     flightData.arrival.scheduled,
     flightData.arrival.actual || flightData.arrival.estimated,
-  )
-  const delayColor = getDelayColor(arrivalDelay)
+  );
 
   return (
     <Card className='mb-4 mx-auto'>
@@ -102,24 +104,7 @@ export function FlightInfo({ flightData }: FlightInfoProps) {
             </p>
             <div className='flex items-center mt-1'>
               <Clock className='h-4 w-4 mr-1 text-muted-foreground' />
-              <p
-                className={cn(
-                  'text-xs font-semibold',
-                  getDelayColor(
-                    calculateDelay(
-                      flightData.departure.scheduled,
-                      flightData.departure.actual || flightData.departure.estimated,
-                    ),
-                  ),
-                )}
-              >
-                {getDelayText(
-                  calculateDelay(
-                    flightData.departure.scheduled,
-                    flightData.departure.actual || flightData.departure.estimated,
-                  ),
-                )}
-              </p>
+              <p className={cn('text-xs font-semibold', getDelayColor(departureDelay))}>{getDelayText(departureDelay)}</p>
             </div>
           </div>
           <div>
@@ -128,7 +113,7 @@ export function FlightInfo({ flightData }: FlightInfoProps) {
             <p className='text-xs'>Actual: {formatDate(flightData.arrival.actual || flightData.arrival.estimated)}</p>
             <div className='flex items-center mt-1'>
               <Clock className='h-4 w-4 mr-1 text-muted-foreground' />
-              <p className={cn('text-xs font-semibold', delayColor)}>{getDelayText(arrivalDelay)}</p>
+              <p className={cn('text-xs font-semibold', getDelayColor(arrivalDelay))}>{getDelayText(arrivalDelay)}</p>
             </div>
           </div>
         </div>
