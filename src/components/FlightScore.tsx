@@ -1,53 +1,92 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { FlightHistoryData } from '@/types/flightHistory'
+import { Button } from './ui/button'
+import { ChevronDown, ChevronUp } from 'lucide-react'
+import { useState } from 'react'
 
 interface FlightScoreProps {
   flightHistory: FlightHistoryData[]
 }
 
 export function FlightScore({ flightHistory }: FlightScoreProps) {
-  const calculateScore = () => {
-    if (flightHistory.length === 0) return 100
+  const [isExpanded, setIsExpanded] = useState(false)
 
-    const totalFlights = flightHistory.length
+  const calculateScore = (history: FlightHistoryData[]) => {
+    if (history.length === 0) return { score: 100, onTimePercentage: 100, averageDelay: 0 }
+
+    const totalFlights = history.length
     let onTimeFlights = 0
     let totalDelayMinutes = 0
 
-    flightHistory.forEach((flight) => {
-      if (flight.departure.delay === 0 && flight.arrival.delay === 0) {
+    history.forEach((flight) => {
+      const departureDelay = flight.departure.delay || 0
+      const arrivalDelay = flight.arrival.delay || 0
+
+      if (departureDelay <= 15 && arrivalDelay <= 15) {
         onTimeFlights++
       }
-      totalDelayMinutes += flight.departure.delay + flight.arrival.delay
+
+      totalDelayMinutes += Math.max(departureDelay, arrivalDelay)
     })
 
     const onTimePercentage = (onTimeFlights / totalFlights) * 100
     const averageDelay = totalDelayMinutes / totalFlights
 
-    // Calculate score: 50% based on on-time percentage, 50% based on average delay
-    const onTimeScore = onTimePercentage * 0.5
-    const delayScore = Math.max(0, 50 - averageDelay * 2) // Lose 2 points for each minute of average delay, up to 50
+    // Calculate score: 70% based on on-time performance, 30% based on average delay
+    const score = onTimePercentage * 0.7 + Math.max(0, 100 - averageDelay) * 0.3
 
-    return Math.round(onTimeScore + delayScore)
+    return {
+      score: Math.round(score),
+      onTimePercentage: Math.round(onTimePercentage),
+      averageDelay: Math.round(averageDelay),
+    }
   }
 
-  const score = calculateScore()
+  const { score, onTimePercentage, averageDelay } = calculateScore(flightHistory)
 
-  const getScoreColor = () => {
-    if (score >= 90) return 'text-green-500'
-    if (score >= 70) return 'text-yellow-500'
-    return 'text-red-500'
+  const getScoreColor = (score: number) => {
+    if (score >= 90) return 'text-green-600 dark:text-green-400'
+    if (score >= 70) return 'text-yellow-600 dark:text-yellow-400'
+    return 'text-red-600 dark:text-red-400'
   }
+
+  const scoreColor = getScoreColor(score)
 
   return (
     <Card className='w-full mb-4'>
-      <CardHeader>
-        <CardTitle>Flight Score</CardTitle>
+      <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+        <CardTitle className='text-sm font-large'>Flight Score</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className='flex items-center justify-center'>
-          <div className={`text-6xl font-bold ${getScoreColor()}`}>{score}</div>
+        <div className='flex flex-col items-center'>
+          <div className={`text-4xl font-bold ${scoreColor}`}>{score}</div>
+          <div className='text-xs text-muted-foreground'>out of 100</div>
+          <Button variant='ghost' size='sm' onClick={() => setIsExpanded(!isExpanded)} className='mt-2'>
+            {isExpanded ? (
+              <>
+                Hide Details
+                <ChevronUp className='ml-2 h-4 w-4' />
+              </>
+            ) : (
+              <>
+                Show Details
+                <ChevronDown className='ml-2 h-4 w-4' />
+              </>
+            )}
+          </Button>
         </div>
-        <p className='text-center text-sm mt-2'>Based on {flightHistory.length} past flights</p>
+        {isExpanded && (
+          <div className='mt-4 text-sm'>
+            <p className='mb-2'>
+              <span className='font-medium font-semibold'>On-time Performance:</span> {onTimePercentage}%
+            </p>
+            <p className='mb-2'>
+              <span className='font-medium font-semibold'>Average Delay:</span> {averageDelay} minutes
+            </p>
+            <p className='text-xs text-muted-foreground'>Based on {flightHistory.length} past flights</p>
+            <p className='mt-2 text-xs italic'>Score calculation: 70% on-time performance, 30% average delay</p>
+          </div>
+        )}
       </CardContent>
     </Card>
   )
