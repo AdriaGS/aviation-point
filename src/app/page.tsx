@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Map from '@/components/Map';
 import SearchBar from '@/components/SearchBar';
 import BlogPosts from '@/components/BlogPosts';
+import Image from 'next/image';
 import { ActivityIcon, ClockIcon, CloudSunIcon, GlobeIcon, MapPinIcon, NewspaperIcon, PlaneIcon } from 'lucide-react';
 import { StatCard } from '@/components/cards/StatCard';
 import { FlightBoard } from '@/components/flight/FlightBoard';
@@ -33,8 +34,8 @@ export default function Home() {
                   Aviation Point
                 </span>
               </h1>
-              <div className='absolute -top-4 right-0 text-indigo-400 dark:text-indigo-900'>
-                <PlaneIcon className='w-24 h-24 animate-float' />
+              <div className='absolute inset-0'>
+                <Image src='/plane.svg' alt='Plane' width={100} height={100} className='w-24 h-24 absolute top-1/2 left-1/2 translate-x-[200%] -translate-y-1/2' />
               </div>
             </div>
             <p className='text-lg text-gray-600 dark:text-gray-300 mb-8'>
