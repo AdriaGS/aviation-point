@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react'
 import SearchBar from '@/components/SearchBar'
 import { FlightHistoryData } from '@/types/flightHistory'
-import { FlightScore } from '@/components/FlightScore';
-import { FlightInfo } from '@/components/FlightInfo';
+import { FlightInfo } from '@/components/flight/FlightInfo';
+import { FlightScore } from '@/components/flight/FlightScore';
 
 interface FlightHistoryProps {
   initialFlightHistory: FlightHistoryData[] | null;

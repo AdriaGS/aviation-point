@@ -10,10 +10,10 @@ export default async function AboutPage() {
           <div className='p-8 w-full'>
             <Title size='xl' as='h1' className='mb-6'>About Aviation Point</Title>
             <p className='text-lg text-gray-700 dark:text-gray-300 leading-7'>
-              Welcome to <strong>Aviation Point</strong> — your ultimate hub for everything aviation! Whether you're an aviation enthusiast, a frequent traveler, or a professional in the industry, we've created a space where you can stay informed, explore data, and deepen your passion for flight.
+              Welcome to <strong>Aviation Point</strong> — your ultimate hub for everything aviation! Whether you are an aviation enthusiast, a frequent traveler, or a professional in the industry, we have created a space where you can stay informed, explore data, and deepen your passion for flight.
             </p>
             <p className='text-lg text-gray-700 dark:text-gray-300 leading-7 mt-4'>
-              At <strong>Aviation Point</strong>, we provide real-time flight tracking, historical flight data, airport insights, airline details, and the latest aviation trends. Our goal is to make aviation information easily accessible, whether you're monitoring flights, planning your journey, or simply exploring the world of aviation.
+              At <strong>Aviation Point</strong>, we provide real-time flight tracking, historical flight data, airport insights, airline details, and the latest aviation trends. Our goal is to make aviation information easily accessible, whether you are monitoring flights, planning your journey, or simply exploring the world of aviation.
             </p>
             <p className='text-lg text-gray-700 dark:text-gray-300 leading-7 mt-4'>
               Built with precision and powered by a love for aviation, our platform is designed to keep you connected to the skies. Explore, discover, and take flight with <strong>Aviation Point</strong>.

@@ -3,11 +3,12 @@ import Map from '@/components/Map';
 import SearchBar from '@/components/SearchBar';
 import BlogPosts from '@/components/BlogPosts';
 import { ActivityIcon, ClockIcon, CloudSunIcon, GlobeIcon, MapPinIcon, NewspaperIcon, PlaneIcon } from 'lucide-react';
-import { StatCard } from '@/components/StatCard';
+import { StatCard } from '@/components/cards/StatCard';
 import { FlightBoard } from '@/components/flight/FlightBoard';
-import { WeatherCard } from '@/components/WeatherCard';
+import { WeatherCard } from '@/components/cards/WeatherCard';
 import { FeaturedArticle } from '@/components/FeaturedArticle';
 import { SectionHeader } from '@/components/SectionHeader';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Aviation Point',
@@ -44,7 +45,9 @@ export default function Home() {
 
           {/* Search Section */}
           <section className='mb-12'>
-            <SearchBar />
+            <Suspense fallback={<div>Loading search bar...</div>}>
+              <SearchBar />
+            </Suspense>
           </section>
 
           {/* Quick Stats Grid */}
