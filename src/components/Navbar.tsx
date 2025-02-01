@@ -2,8 +2,9 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { Menu, X, Plane } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 
@@ -25,7 +26,13 @@ export function Navbar() {
         <div className='flex items-center justify-between h-16'>
           <div className='flex items-center'>
             <Link href='/' className='flex-shrink-0'>
-              <Plane className='h-8 w-8 text-indigo-400' />
+              <Image
+                src='/logo-white.png'
+                alt='Aviation Point'
+                width={200}
+                height={200}
+                className='h-16 w-16 text-indigo-400'
+              />
             </Link>
             <div className='hidden md:block'>
               <div className='ml-10 flex items-baseline space-x-4'>

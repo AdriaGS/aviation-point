@@ -18,6 +18,7 @@ export function FeaturedArticle({
       <Image
         src={image}
         alt={title}
+        fill={true}
         className='w-full h-48 object-cover'
       />
       <div className='absolute inset-0 bg-gradient-to-t from-black/70 to-transparent' />
