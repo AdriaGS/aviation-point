@@ -4,12 +4,12 @@ import { Card, CardContent } from '@/components/ui/card'
 import { getAllPosts } from '@/lib/getPosts';
 import { BlogPost } from '@/types/blogPost';
 
-export default function BlogPosts() {
+export default function BlogPosts({ featuredArticle }: { featuredArticle: string }) {
   const blogPosts: BlogPost[] = getAllPosts();
 
   return (
-    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-      {blogPosts.map((post) => (
+    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6'>
+      {blogPosts.filter((post) => post.slug !== featuredArticle).slice(0, 2).map((post) => (
         <Link key={post.slug} href={`/blog/${post.slug}`}>
           <Card className='overflow-hidden transition-shadow duration-300 hover:shadow-lg h-full flex flex-col'>
             <CardContent className='p-0 h-full flex flex-col'>

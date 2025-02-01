@@ -97,23 +97,6 @@ export default function Home() {
             />
           </section>
 
-          {/* Blog & News Section */}
-          <section className='mb-12'>
-            <SectionHeader
-              title='Latest Aviation News'
-              icon={<NewspaperIcon className='h-5 w-5' />}
-            />
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-              <FeaturedArticle
-                title='The Future of Aviation'
-                description='Exploring the latest trends in aviation technology.'
-                image='/blog-images/placeholder.jpg'
-                link='/blog/future-of-aviation'
-              />
-              <BlogPosts />
-            </div>
-          </section>
-
           {/* Weather Widget */}
           <section className='mb-12'>
             <SectionHeader
@@ -125,6 +108,23 @@ export default function Home() {
               <WeatherCard airport='LAX' temp={75} condition='Sunny' />
               <WeatherCard airport='DXB' temp={89} condition='Clear' />
               <WeatherCard airport='LHR' temp={55} condition='Cloudy' />
+            </div>
+          </section>
+
+          {/* Blog & News Section */}
+          <section className='mb-12'>
+            <SectionHeader
+              title='Latest Blogs'
+              icon={<NewspaperIcon className='h-5 w-5' />}
+            />
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+              <FeaturedArticle
+                title='The Future of Aviation'
+                description='Exploring the latest trends in aviation technology.'
+                image='/blog-images/the-future-of-aviation/cover.png'
+                link='/blog/the-future-of-aviation'
+              />
+              <BlogPosts featuredArticle='the-future-of-aviation' />
             </div>
           </section>
         </div>
