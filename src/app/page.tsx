@@ -3,7 +3,7 @@ import Map from '@/components/Map';
 import SearchBar from '@/components/SearchBar';
 import BlogPosts from '@/components/BlogPosts';
 import Image from 'next/image';
-import { ActivityIcon, ClockIcon, CloudSunIcon, GlobeIcon, MapPinIcon, NewspaperIcon, PlaneIcon } from 'lucide-react';
+import { ActivityIcon, ClockIcon, CloudSunIcon, FacebookIcon, GlobeIcon, InstagramIcon, LinkedinIcon, MapPinIcon, NewspaperIcon, PlaneIcon, TwitterIcon } from 'lucide-react';
 import { StatCard } from '@/components/cards/StatCard';
 import { FlightBoard } from '@/components/flight/FlightBoard';
 import { WeatherCard } from '@/components/cards/WeatherCard';
@@ -129,6 +129,125 @@ export default function Home() {
           </section>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className='bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700'>
+        <div className='max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8'>
+          <div className='grid grid-cols-1 md:grid-cols-4 gap-8'>
+            {/* Logo and Description */}
+            <div className='space-y-4'>
+              <div className='flex items-center'>
+                <Image src='/plane.svg' alt='Plane' width={100} height={100} className='w-8 h-8 text-indigo-400' />
+                <span className='ml-2 text-xl font-bold text-gray-900 dark:text-gray-100'>
+                  Aviation Point
+                </span>
+              </div>
+              <p className='text-sm text-gray-500 dark:text-gray-400'>
+                Your gateway to real-time flight tracking and aviation insights.
+              </p>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h3 className='text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4'>
+                Quick Links
+              </h3>
+              <ul className='space-y-2'>
+                <li>
+                  <a
+                    href='/flight-history'
+                    className='text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-400 transition-colors'
+                  >
+                    Flight History
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href='/airports'
+                    className='text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-400 transition-colors'
+                  >
+                    Airports
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href='/blog'
+                    className='text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-400 transition-colors'
+                  >
+                    Blog
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href='/about'
+                    className='text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-400 transition-colors'
+                  >
+                    About Us
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Contact Information */}
+            <div>
+              <h3 className='text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4'>
+                Contact
+              </h3>
+              <ul className='space-y-2'>
+                <li className='text-sm text-gray-500 dark:text-gray-400'>
+                  Email: support@aviationpoint.com
+                </li>
+                <li className='text-sm text-gray-500 dark:text-gray-400'>
+                  Phone: +1 (555) 123-4567
+                </li>
+                <li className='text-sm text-gray-500 dark:text-gray-400'>
+                  Address: 123 Aviation Way, Sky City
+                </li>
+              </ul>
+            </div>
+
+            {/* Social Media Links */}
+            <div>
+              <h3 className='text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4'>
+                Follow Us
+              </h3>
+              <div className='flex space-x-4'>
+                <a
+                  href='https://twitter.com'
+                  className='text-gray-500 dark:text-gray-400 hover:text-indigo-400 transition-colors'
+                >
+                  <TwitterIcon className='w-5 h-5' />
+                </a>
+                <a
+                  href='https://facebook.com'
+                  className='text-gray-500 dark:text-gray-400 hover:text-indigo-400 transition-colors'
+                >
+                  <FacebookIcon className='w-5 h-5' />
+                </a>
+                <a
+                  href='https://linkedin.com'
+                  className='text-gray-500 dark:text-gray-400 hover:text-indigo-400 transition-colors'
+                >
+                  <LinkedinIcon className='w-5 h-5' />
+                </a>
+                <a
+                  href='https://instagram.com'
+                  className='text-gray-500 dark:text-gray-400 hover:text-indigo-400 transition-colors'
+                >
+                  <InstagramIcon className='w-5 h-5' />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Copyright Notice */}
+          <div className='mt-12 border-t border-gray-200 dark:border-gray-700 pt-8 text-center'>
+            <p className='text-sm text-gray-500 dark:text-gray-400'>
+              &copy; {new Date().getFullYear()} Aviation Point. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
