@@ -46,7 +46,7 @@ export default function SearchBar({ onLoadingChange }: { onLoadingChange?: (load
           onChange={(e) => setFlightCode(e.target.value)}
           required
         />
-        <Button type='submit' disabled={loading} className='bg-indigo-500 hover:bg-indigo-600 text-white'>
+        <Button type='submit' disabled={loading} className='bg-indigo-400 hover:bg-indigo-600 text-white'>
           {loading ? (
             <>
               <Loader2 className='mr-2 h-4 w-4 animate-spin' />

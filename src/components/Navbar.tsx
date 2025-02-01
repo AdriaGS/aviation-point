@@ -25,7 +25,7 @@ export function Navbar() {
         <div className='flex items-center justify-between h-16'>
           <div className='flex items-center'>
             <Link href='/' className='flex-shrink-0'>
-              <Plane className='h-8 w-8 text-indigo-500' />
+              <Plane className='h-8 w-8 text-indigo-400' />
             </Link>
             <div className='hidden md:block'>
               <div className='ml-10 flex items-baseline space-x-4'>
@@ -34,7 +34,7 @@ export function Navbar() {
                     key={item.name}
                     href={item.href}
                     className={`px-3 py-2 rounded-md text-sm font-medium ${pathname === item.href
-                      ? 'bg-indigo-500 text-white'
+                      ? 'bg-indigo-400 text-white'
                       : 'text-gray-700 dark:text-gray-300 hover:bg-indigo-100 dark:hover:bg-gray-700'
                       }`}
                   >
