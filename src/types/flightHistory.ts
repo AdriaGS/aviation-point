@@ -1,6 +1,6 @@
-export interface FlightHistoryData {
-  flight_date: string;
-  flight_status: string;
+export interface FlightData {
+  flightDate: string;
+  flightStatus: string;
   departure: {
     airport: string;
     iata: string;

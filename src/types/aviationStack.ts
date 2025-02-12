@@ -1,14 +1,16 @@
-export interface AviationStackResponse {
-  pagination: {
-    limit: number;
-    offset: number;
-    count: number;
-    total: number;
-  };
-  data: FlightData[];
+export interface Pagination {
+  limit: number;
+  offset: number;
+  count: number;
+  total: number;
 }
 
-export interface FlightData {
+export interface ApiFlightsResponse {
+  pagination: Pagination;
+  data: ApiFlightData[];
+}
+
+export interface ApiFlightData {
   flight_date: string; // Date of the flight in YYYY-MM-DD format
   flight_status: string; // Status of the flight (e.g., "active", "landed")
 

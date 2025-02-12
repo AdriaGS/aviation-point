@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import FlightHistory from './FlightHistory'
-import { fetchFlightHistory } from '@/lib/api'
-import { FlightHistoryData } from '@/types/flightHistory'
+import { getFlightHistory } from '@/lib/flights'
+import { FlightData } from '@/types/flightHistory'
 
 export default async function FlightHistoryPage({
   searchParams,
@@ -9,12 +9,12 @@ export default async function FlightHistoryPage({
   searchParams: { flightCode?: string }
 }) {
   const flightCode = searchParams?.flightCode
-  let flightHistory: FlightHistoryData[] | null = null
+  let flightHistory: FlightData[] | null = null
   let error: string | null = null
 
   if (flightCode) {
     try {
-      flightHistory = await fetchFlightHistory(flightCode)
+      flightHistory = await getFlightHistory(flightCode)
     } catch (e) {
       error = 'Failed to fetch flight history. Please try again.'
     }

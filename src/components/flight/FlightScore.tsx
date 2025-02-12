@@ -1,17 +1,17 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { FlightHistoryData } from '@/types/flightHistory'
+import { FlightData } from '@/types/flightHistory'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '../ui/button'
 
 interface FlightScoreProps {
-  flightHistory: FlightHistoryData[]
+  flightHistory: FlightData[]
 }
 
 export function FlightScore({ flightHistory }: FlightScoreProps) {
   const [isExpanded, setIsExpanded] = useState(false)
 
-  const calculateScore = (history: FlightHistoryData[]) => {
+  const calculateScore = (history: FlightData[]) => {
     if (history.length === 0) return { score: 100, onTimePercentage: 100, averageDelay: 0 }
 
     const totalFlights = history.length

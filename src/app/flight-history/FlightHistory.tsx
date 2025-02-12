@@ -2,17 +2,17 @@
 
 import { useState, useEffect } from 'react'
 import SearchBar from '@/components/SearchBar'
-import { FlightHistoryData } from '@/types/flightHistory'
+import { FlightData } from '@/types/flightHistory'
 import { FlightInfo } from '@/components/flight/FlightInfo';
 import { FlightScore } from '@/components/flight/FlightScore';
 
 interface FlightHistoryProps {
-  initialFlightHistory: FlightHistoryData[] | null;
+  initialFlightHistory: FlightData[] | null;
   initialError: string | null;
 }
 
 export default function FlightHistory({ initialFlightHistory, initialError }: FlightHistoryProps) {
-  const [flightHistory, setFlightHistory] = useState<FlightHistoryData[] | null>(initialFlightHistory)
+  const [flightHistory, setFlightHistory] = useState<FlightData[] | null>(initialFlightHistory)
   const [, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(initialError)
 

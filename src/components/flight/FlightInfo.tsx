@@ -3,12 +3,12 @@ import { ChevronDown, ChevronUp, Clock, Info, Plane } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Card, CardContent } from '@/components/ui/card'
-import { FlightHistoryData } from '@/types/flightHistory'
+import { FlightData } from '@/types/flightHistory'
 import Link from 'next/link'
 import { cn } from '@/lib/extensions/cn'
 
 interface FlightInfoProps {
-  flightData: FlightHistoryData
+  flightData: FlightData
 }
 
 export function FlightInfo({ flightData }: FlightInfoProps) {
@@ -71,7 +71,7 @@ export function FlightInfo({ flightData }: FlightInfoProps) {
             <h3 className='text-lg font-bold text-primary'>
               {flightData.airline.name} - {flightData.flight.iata}
             </h3>
-            <p className='text-sm text-muted-foreground'>{formatDate(flightData.flight_date)}</p>
+            <p className='text-sm text-muted-foreground'>{formatDate(flightData.flightDate)}</p>
           </div>
           <Button variant='ghost' size='sm' onClick={() => setIsExpanded(!isExpanded)} aria-expanded={isExpanded}>
             {isExpanded ? <ChevronUp className='h-4 w-4' /> : <ChevronDown className='h-4 w-4' />}
