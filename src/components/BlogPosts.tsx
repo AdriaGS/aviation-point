@@ -1,12 +1,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Card, CardContent } from '@/components/ui/card'
-import { getAllPosts } from '@/lib/getPosts';
 import { BlogPost } from '@/types/blogPost';
 
-export default function BlogPosts({ featuredArticle }: { featuredArticle: string }) {
-  const blogPosts: BlogPost[] = getAllPosts();
-
+export default function BlogPosts({ featuredArticle, blogPosts }: { featuredArticle: string, blogPosts: BlogPost[] }) {
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6'>
       {blogPosts.filter((post) => post.slug !== featuredArticle).slice(0, 2).map((post) => (
