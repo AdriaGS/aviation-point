@@ -94,10 +94,10 @@ export default async function Home() {
             />
             <FlightBoard
               flights={flights.map(f => ({
-                flight: f.flight?.iata,
+                flight: f.flight.iata,
                 status: f.flightStatus,
-                departure: f.departure?.iata,
-                arrival: f.arrival?.iata
+                departure: f.departure.actual,
+                arrival: f.arrival.actual
               }))}
             />
           </section>
