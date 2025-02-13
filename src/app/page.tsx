@@ -19,7 +19,7 @@ import { getUserLocation } from '@/lib/location';
 
 export default async function Home() {
   const location = await getUserLocation();
-  const airports = await getNearestAirports(location.latitude, location.longitude);
+  const airports = await getNearestAirports(location);
   const flights = airports[0]?.iataCode ? await getDepartingFlights(airports[0].iataCode) : [];
   const weather = await Promise.all(
     airports.map((airport) => getWeatherAtLocation(airport.latitude, airport.longitude))

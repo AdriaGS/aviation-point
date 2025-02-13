@@ -41,7 +41,7 @@ async function getFlightData(url: URL): Promise<FlightData[]> {
 
     return flightData;
   } catch (error) {
-    console.error('Error fetching flight by airport code:', error);
+    console.error('Error fetching flight data:', error);
     throw error;
   }
 }
