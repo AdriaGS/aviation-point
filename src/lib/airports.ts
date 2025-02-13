@@ -13,6 +13,10 @@ export async function getNearestAirports(
   lng: number,
   limit: number = 4
 ): Promise<AirportData[]> {
+  if (!lat || !lng) {
+    return [];
+  }
+
   const url = new URL(`${baseUrl}/v1/airports`);
   url.searchParams.set('access_key', apiKey);
   url.searchParams.set('lat', lat.toString());
@@ -20,7 +24,7 @@ export async function getNearestAirports(
   url.searchParams.set('limit', limit.toString());
 
   try {
-    const response = await fetch(url.href);
+    const response = await fetch(url.href, { cache: 'no-store' });
     if (!response.ok) {
       throw new Error(
         `Failed to fetch nearest airports for lat: ${lat}, lng: ${lng}, limit: ${limit}`

@@ -19,6 +19,8 @@ export async function getFlightHistory(
 }
 
 export async function getDepartingFlights(iata: string) {
+  if (!iata) return [];
+
   const url = new URL(`${baseUrl}/v1/flights`);
   url.searchParams.set('access_key', apiKey);
   url.searchParams.set('dep_iata', iata);
@@ -29,7 +31,7 @@ export async function getDepartingFlights(iata: string) {
 
 async function getFlightData(url: URL): Promise<FlightData[]> {
   try {
-    const response = await fetch(url.href);
+    const response = await fetch(url.href, { cache: 'no-store' });
     if (!response.ok) {
       throw new Error(`Failed to fetch flight information for url ${url.href}`);
     }

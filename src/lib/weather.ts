@@ -2,7 +2,7 @@ import { WeatherData } from '@/types/weather';
 import { checkNotNull } from './extensions/checkNotNull';
 import { ApiWeatherResponse } from '@/types/openWeather';
 
-const OPENWEATHER_KEY = checkNotNull(process.env.PUBLIC_OPENWEATHER_KEY);
+const OPENWEATHER_KEY = checkNotNull(process.env.OPENWEATHER_API_KEY);
 
 export async function getWeatherAtLocation(
   lat: number,
