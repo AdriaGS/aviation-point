@@ -13,7 +13,7 @@ export function WeatherCard({ airport, temp, condition }: WeatherCardProps) {
             {airport}
           </p>
           <p className='text-2xl font-bold text-gray-900 dark:text-gray-100'>
-            {temp}°F
+            {temp}°C
           </p>
         </div>
         <div className='text-sm text-gray-500 dark:text-gray-400'>

@@ -1,6 +1,7 @@
 import { WeatherData } from '@/types/weather';
 import { checkNotNull } from './extensions/checkNotNull';
 import { ApiWeatherResponse } from '@/types/openWeather';
+import { error } from 'console';
 
 const OPENWEATHER_KEY = checkNotNull(process.env.OPENWEATHER_API_KEY);
 
@@ -11,12 +12,16 @@ export async function getWeatherAtLocation(
   const url = new URL('https://api.openweathermap.org/data/2.5/weather');
   url.searchParams.set('appid', OPENWEATHER_KEY);
   url.searchParams.set('lat', lat.toString());
-  url.searchParams.set('lng', lng.toString());
+  url.searchParams.set('lon', lng.toString());
   url.searchParams.set('units', 'metric');
 
   try {
     const response = await fetch(url.href);
     if (!response.ok) {
+      console.error(
+        `Failed to fetch weather for lat: ${lat}, lng: ${lng}.`,
+        error
+      );
       throw new Error(`Failed to fetch weather for lat: ${lat}, lng: ${lng}.`);
     }
 
