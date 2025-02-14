@@ -4,7 +4,8 @@ export interface AirportData {
   icaoCode: string;
   latitude: number;
   longitude: number;
+  geonameId: string;
+  timezone: string;
+  countryName: string;
   cityIataCode: string;
-  cityName: string;
-  website: string;
 }

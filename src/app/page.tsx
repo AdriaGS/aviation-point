@@ -9,17 +9,17 @@ import { WeatherCard } from '@/components/cards/WeatherCard';
 import { FeaturedArticle } from '@/components/FeaturedArticle';
 import { SectionHeader } from '@/components/SectionHeader';
 import { Suspense } from 'react';
-import { getNearestAirports } from '@/lib/airports';
 import { getDepartingFlights } from '@/lib/flights';
 import { getWeatherAtLocation } from '@/lib/weather';
 import { WeatherData } from '@/types/weather';
 import { BlogPost } from '@/types/blogPost';
 import { getAllPosts } from '@/lib/getPosts';
 import { getUserLocation } from '@/lib/location';
+import { findClosestAirports } from '@/lib/airports/findClosestAiports';
 
 export default async function Home() {
   const location = await getUserLocation();
-  const airports = await getNearestAirports(location);
+  const airports = await findClosestAirports(location.latitude, location.longitude);
   const flights = airports[0]?.iataCode ? await getDepartingFlights(airports[0].iataCode) : [];
   const weather = await Promise.all(
     airports.map((airport) => getWeatherAtLocation(airport.latitude, airport.longitude))
