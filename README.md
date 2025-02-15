@@ -40,3 +40,21 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 * https://aviationstack.com/dashboard
 * https://aviationstack.com/documentation
+
+## IP Geolocation API
+
+Used to provide real-time accurate geolocation for any IPv4 or IPv6 address.
+
+* https://ipgeolocation.io/
+
+## OpenWeather API
+
+Used to get weather information
+
+* https://home.openweathermap.org/
+
+## MongoDB
+
+MongoDB is a source-available, cross-platform, document-oriented database program. Classified as a NoSQL database product, MongoDB uses JSON-like documents with optional schemas.
+
+* https://account.mongodb.com/
