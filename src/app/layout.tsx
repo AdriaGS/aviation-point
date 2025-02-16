@@ -3,6 +3,7 @@ import '@/styles/globals.css';
 import { Navbar } from '@/components/Navbar';
 import ThemeWrapper from '@/components/theme/ThemeWrapper';
 import { Metadata } from 'next';
+import { connectToDatabase } from '@/lib/db';
 
 const geistSans = localFont({
   src: '../../public/fonts/GeistVF.woff',
@@ -30,6 +31,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  connectToDatabase();
   return (
     <html lang='en'>
       <body
