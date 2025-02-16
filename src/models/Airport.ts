@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-export interface AirportData extends Document {
+export interface AirportDocument extends Document {
   airportName: string;
   iataCode: string;
   icaoCode: string;
@@ -25,6 +25,6 @@ const AirportSchema: Schema = new Schema({
   lastUpdated: { type: Date, default: Date.now },
 });
 
-export const Airport =
-  mongoose.models.Airport ||
-  mongoose.model<AirportData>('AirportData', AirportSchema);
+export const AirportData =
+  mongoose.models.AirportData ||
+  mongoose.model<AirportDocument>('AirportData', AirportSchema);

@@ -1,4 +1,4 @@
-import { Airport } from '@/models/Airport';
+import { AirportData } from '@/models/Airport';
 import { connectToDatabase } from '../db';
 
 export const findClosestAirports = async (
@@ -7,7 +7,7 @@ export const findClosestAirports = async (
 ) => {
   await connectToDatabase();
 
-  const airports = await Airport.aggregate([
+  const airports = await AirportData.aggregate([
     {
       $addFields: {
         distance: {

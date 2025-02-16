@@ -1,17 +1,17 @@
 import { fetchAirports } from './fetchAirports';
 import { connectToDatabase } from '../db';
-import { Airport } from '@/models/Airport';
+import { AirportData } from '@/models/Airport';
 
 export const updateAirportsInDB = async () => {
   try {
     await connectToDatabase();
     const airports = await fetchAirports({
       offset: 100,
-      limit: 100,
+      limit: 2000,
     });
 
     for (const airport of airports) {
-      await Airport.findOneAndUpdate(
+      await AirportData.findOneAndUpdate(
         { iataCode: airport.iataCode },
         {
           airportName: airport.name,
@@ -27,8 +27,6 @@ export const updateAirportsInDB = async () => {
         { upsert: true, new: true }
       );
     }
-
-    console.log('Airport data updated successfully!');
   } catch (error) {
     console.error('Error updating airport data:', error);
   }
