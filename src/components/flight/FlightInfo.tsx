@@ -5,7 +5,7 @@ import { Progress } from '@/components/ui/progress'
 import { Card, CardContent } from '@/components/ui/card'
 import { FlightData } from '@/types/flightHistory'
 import Link from 'next/link'
-import { cn } from '@/lib/extensions/cn'
+import { cn } from '@/lib/cn'
 
 interface FlightInfoProps {
   flightData: FlightData

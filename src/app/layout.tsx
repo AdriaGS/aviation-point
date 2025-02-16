@@ -1,7 +1,7 @@
 import localFont from 'next/font/local';
 import '@/styles/globals.css';
 import { Navbar } from '@/components/Navbar';
-import ThemeWrapper from '@/components/theme/ThemeWrapper';
+import { ThemeProvider } from '@/components/theme/ThemeProvider';
 import { Metadata } from 'next';
 import { connectToDatabase } from '@/lib/db';
 
@@ -37,10 +37,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeWrapper>
+        <ThemeProvider
+          attribute='class'
+          defaultTheme='system'
+          enableSystem
+          disableTransitionOnChange
+        >
           <Navbar />
           {children}
-        </ThemeWrapper>
+        </ThemeProvider>
       </body>
     </html>
   );

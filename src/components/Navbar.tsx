@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { ModeToggle } from './theme/ModeToggle'
 
 const navItems = [
   { name: 'Home', href: '/' },
@@ -52,13 +53,14 @@ export function Navbar() {
             </div>
           </div>
           <div className='hidden md:block'>
-            <div className='ml-10 flex items-baseline space-x-4'>
+            <div className='ml-10 flex items-center space-x-4'>
               <Button variant='default' className='px-3 py-2 rounded-md text-sm font-medium bg-indigo-400 text-white hover:bg-indigo-500'>
                 Log In
               </Button>
               <Button variant='ghost' className='px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-100 dark:hover:bg-gray-700'>
                 Sign Up
               </Button>
+              <ModeToggle />
             </div>
           </div>
           <div className='-mr-2 flex md:hidden'>

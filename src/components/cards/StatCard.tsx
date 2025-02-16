@@ -21,7 +21,7 @@ export function StatCard({ title, value, icon, trend }: StatCardProps) {
             {value}
           </p>
         </div>
-        <div className='p-3 bg-indigo-400 dark:bg-indigo-900 rounded-full'>
+        <div className='p-3 bg-indigo-100 dark:bg-indigo-900 rounded-full'>
           {icon}
         </div>
       </div>
