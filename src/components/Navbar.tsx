@@ -8,6 +8,7 @@ import { Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { ModeToggle } from './theme/ModeToggle'
+import { AuthModal, AuthMode } from './auth/AuthModal'
 
 const navItems = [
   { name: 'Home', href: '/' },
@@ -19,7 +20,14 @@ const navItems = [
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const [authMode, setAuthMode] = useState<AuthMode>('login')
+  const [authModalOpen, setAuthModalOpen] = useState(false)
   const pathname = usePathname()
+
+  const openModal = (mode: AuthMode) => {
+    setAuthMode(mode)
+    setAuthModalOpen(true)
+  }
 
   return (
     <nav className='sticky top-0 z-100 bg-white dark:bg-gray-800 shadow-md'>
@@ -54,12 +62,13 @@ export function Navbar() {
           </div>
           <div className='hidden md:block'>
             <div className='ml-10 flex items-center space-x-4'>
-              <Button variant='default' className='px-3 py-2 rounded-md text-sm font-medium bg-indigo-400 text-white hover:bg-indigo-500'>
+              <Button variant='default' className='px-3 py-2 rounded-md text-sm font-medium bg-indigo-400 text-white hover:bg-indigo-500' onClick={() => openModal('login')}>
                 Log In
               </Button>
-              <Button variant='ghost' className='px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-100 dark:hover:bg-gray-700'>
+              <Button variant='ghost' className='px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-100 dark:hover:bg-gray-700' onClick={() => openModal('signup')}>
                 Sign Up
               </Button>
+              <AuthModal open={authModalOpen} onOpenChange={setAuthModalOpen} initialMode={authMode} />
               <ModeToggle />
             </div>
           </div>
