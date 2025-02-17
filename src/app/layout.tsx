@@ -1,6 +1,6 @@
 import localFont from 'next/font/local';
 import '@/styles/globals.css';
-import { Navbar } from '@/components/Navbar';
+import { Navbar } from '@/components/navbar/Navbar';
 import { ThemeProvider } from '@/components/theme/ThemeProvider';
 import { Metadata } from 'next';
 import { connectToDatabase } from '@/lib/db';

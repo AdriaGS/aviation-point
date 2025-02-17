@@ -1,14 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import { ModeToggle } from './theme/ModeToggle'
-import { AuthModal, AuthMode } from './auth/AuthModal'
+import { ModeToggle } from '../theme/ModeToggle'
+import { AuthModal, AuthMode } from '../auth/AuthModal'
+import { AuthButtons } from './AuthButtons'
 
 const navItems = [
   { name: 'Home', href: '/' },
@@ -24,10 +25,10 @@ export function Navbar() {
   const [authModalOpen, setAuthModalOpen] = useState(false)
   const pathname = usePathname()
 
-  const openModal = (mode: AuthMode) => {
+  const openModal = useCallback((mode: AuthMode) => {
     setAuthMode(mode)
     setAuthModalOpen(true)
-  }
+  }, []);
 
   return (
     <nav className='sticky top-0 z-100 bg-white dark:bg-gray-800 shadow-md'>
@@ -62,13 +63,11 @@ export function Navbar() {
           </div>
           <div className='hidden md:block'>
             <div className='ml-10 flex items-center space-x-4'>
-              <Button variant='default' className='px-3 py-2 rounded-md text-sm font-medium bg-indigo-400 text-white hover:bg-indigo-500' onClick={() => openModal('login')}>
-                Log In
-              </Button>
-              <Button variant='ghost' className='px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-100 dark:hover:bg-gray-700' onClick={() => openModal('signup')}>
-                Sign Up
-              </Button>
-              <AuthModal open={authModalOpen} onOpenChange={setAuthModalOpen} initialMode={authMode} />
+              <AuthButtons openModal={openModal} />
+            </div>
+          </div>
+          <div className='hidden md:block'>
+            <div className='ml-10 flex items-center space-x-4'>
               <ModeToggle />
             </div>
           </div>
@@ -102,12 +101,7 @@ export function Navbar() {
                     ))}
                   </div>
                   <div className='flex flex-col space-y-4 mt-6'>
-                    <Button variant='default' className='block px-3 py-2 rounded-md text-base font-medium bg-indigo-400 text-white hover:bg-indigo-500'>
-                      Log In
-                    </Button>
-                    <Button variant='ghost' className='block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-indigo-100 dark:hover:bg-gray-700'>
-                      Sign Up
-                    </Button>
+                    <AuthButtons openModal={openModal} />
                   </div>
                 </div>
               </SheetContent>
@@ -115,6 +109,9 @@ export function Navbar() {
           </div>
         </div>
       </div>
+
+      {/* Auth Modal */}
+      <AuthModal open={authModalOpen} onOpenChange={setAuthModalOpen} initialMode={authMode} />
     </nav >
   )
 }
